@@ -33,5 +33,4 @@ jobs:
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           # 変更登録
           git add -A && git commit -am "Automated :Reformat Java source code."
-          echo ${{ github.head_ref }}
-          echo ${{ github.event.pull_request.head.ref }}
+          git push origin HEAD:${{ github.head_ref }}
