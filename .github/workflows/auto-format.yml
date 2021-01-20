@@ -21,14 +21,16 @@ jobs:
       - name: Execute formatter
         run: |
           java -jar google-java-format.jar -replace $(git ls-files src/**/*.java)
-      - name: Git config
+      - name: Check for modified files
+        id: git-check
+        run: echo ::set-output name=modified::$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)
+      - name: Push changes
+        if: steps.git-check.outputs.modified == 'true'
         run: |
+          # Git リポジトリの設定
           git config --local user.name "yukiusa"
           git config --local user.email "yukiusa@arc-connects.com"
-      - name: Git commit
-        run: |
-          git add -A
-          git commit -a -m "[auto action] Reformat Java source code."
-          git branch
-          echo "${GITHUB_REF#refs/heads/}"
-          #git push origin HEAD:${GITHUB_REF#refs/heads/}
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          # 変更登録
+          git add -A && git commit -am "Automated :Reformat Java source code."
+          git push
