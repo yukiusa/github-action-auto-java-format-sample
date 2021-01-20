@@ -4,7 +4,7 @@ on:
   pull_request:
 
 jobs:
-  reformat:
+  format:
 
     runs-on: ubuntu-latest
 
@@ -30,6 +30,7 @@ jobs:
           # Git リポジトリの設定
           git config --local user.name "yukiusa"
           git config --local user.email "yukiusa@arc-connects.com"
+          git config --local pull.rebase true
           #git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git pull
           # 変更登録
