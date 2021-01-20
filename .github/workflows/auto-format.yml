@@ -14,25 +14,24 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-      - name: Download Tool
-        run: |
-          wget -q -O google-java-format.jar \
-            https://github.com/google/google-java-format/releases/download/google-java-format-1.9/google-java-format-1.9-all-deps.jar
-      - name: Execute formatter
-        run: |
-          java -jar google-java-format.jar -replace $(git ls-files src/**/*.java)
-      - name: Check for modified files
-        id: git-check
-        run: echo ::set-output name=modified::$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)
-      - name: Push changes
-        if: steps.git-check.outputs.modified == 'true'
+      - name: Git settings
         run: |
           # Git リポジトリの設定
           git config --local user.name "yukiusa"
           git config --local user.email "yukiusa@arc-connects.com"
           git config --local pull.rebase true
-          #git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git pull
+      - name: Execute formatter
+        run: |
+          wget -q -O google-java-format.jar \
+            https://github.com/google/google-java-format/releases/download/google-java-format-1.9/google-java-format-1.9-all-deps.jar
+          java -jar google-java-format.jar -replace $(git ls-files src/**/*.java)
+      - name: Check for modified files
+        id: git-check
+        run: echo ::set-output name=modified::$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)
+      - name: Push
+        if: steps.git-check.outputs.modified == 'true'
+        run: |
           # 変更登録
           git add -A && git commit -am "Automated :Reformat Java source code."
           git push origin HEAD:${{ github.head_ref }}
