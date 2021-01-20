@@ -20,7 +20,7 @@ jobs:
           git config --local user.name "yukiusa"
           git config --local user.email "yukiusa@arc-connects.com"
           git config --local pull.rebase true
-          git pull origin master
+          git pull
       - name: Execute formatter
         run: |
           wget -q -O google-java-format.jar \
@@ -33,5 +33,5 @@ jobs:
         if: steps.git-check.outputs.modified == 'true'
         run: |
           # 変更登録
-          git add -A && git commit -am "Automated :Reformat Java source code."
+          git commit -am "Automated :Reformat Java source code."
           git push origin HEAD:${{ github.head_ref }}
