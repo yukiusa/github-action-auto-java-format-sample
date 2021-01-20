@@ -31,7 +31,7 @@ jobs:
           git config --local user.name "yukiusa"
           git config --local user.email "yukiusa@arc-connects.com"
           #git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-          git fetch
+          git pull
           # 変更登録
           git add -A && git commit -am "Automated :Reformat Java source code."
           git push origin HEAD:${{ github.head_ref }}
