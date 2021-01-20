@@ -20,7 +20,7 @@ jobs:
           git config --local user.name "yukiusa"
           git config --local user.email "yukiusa@arc-connects.com"
           git config --local pull.rebase true
-          git pull
+          #git pull
       - name: Execute formatter
         run: |
           wget -q -O google-java-format.jar \
