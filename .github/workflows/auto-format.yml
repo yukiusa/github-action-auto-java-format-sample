@@ -19,9 +19,7 @@ jobs:
           # Git リポジトリの設定
           git config --local user.name "yukiusa"
           git config --local user.email "yukiusa@arc-connects.com"
-          git config --local pull.rebase true
-          git fetch
-      - name: Execute formatter
+      - name: Code formatter
         run: |
           wget -q -O google-java-format.jar \
             https://github.com/google/google-java-format/releases/download/google-java-format-1.9/google-java-format-1.9-all-deps.jar
@@ -32,6 +30,6 @@ jobs:
       - name: Push
         if: steps.git-check.outputs.modified == 'true'
         run: |
-          # 変更登録
           git commit -am "Automated :Reformat Java source code."
+          git fetch
           git push -f origin HEAD:${{ github.head_ref }}
